@@ -5,10 +5,13 @@ using TMPro;
 
 public class Dialogue : MonoBehaviour
 {
-    public TextMeshProUGUI textDisplay;
+    public TextMeshProUGUI textDisplay, name_text, prompt_text;
     public string[] sentences;
+    public string[] speakers;
+    public string choices;
     public float typingSpeed;
     private int index;
+    public int player_choice;
     public bool active;
     // Start is called before the first frame update
     void Start()
@@ -26,16 +29,29 @@ public class Dialogue : MonoBehaviour
                 StopAllCoroutines();
                 textDisplay.text = sentences[index];
             } 
+            player_choice = 0;
+        } else if(Input.GetKeyDown(KeyCode.X)){
+            if(textDisplay.text == sentences[index]){
+                nextLine();
+            } else{
+                StopAllCoroutines();
+                textDisplay.text = sentences[index];
+            } 
+            player_choice = 1;
         }
         
     }
     public void startDialogue(){
         active = true;
         textDisplay.text = string.Empty;
+        prompt_text.text = string.Empty;
+        name_text.text = string.Empty;
         index = 0;
         StartCoroutine(TypeLine());
     }
     IEnumerator TypeLine(){
+        name_text.text = speakers[index];
+        prompt_text.text = choices;
         foreach(char letter in sentences[index].ToCharArray()){
             textDisplay.text += letter;
             yield return new WaitForSeconds(typingSpeed);

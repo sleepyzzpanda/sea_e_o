@@ -10,6 +10,7 @@ public class player_behavior : MonoBehaviour
     public float speed = 5.0f;
     public Transform move_point;
     public LayerMask stop_movement;
+    public GameObject sprite;
     // ---------------------------------------------
     // Start is called before the first frame update
     void Start()
@@ -31,18 +32,24 @@ public class player_behavior : MonoBehaviour
     }
 
     void player_move(){
+        
         // if press the arrow keys, move
         if(Math.Abs(Input.GetAxisRaw("Horizontal")) == 1f){
-            if(!Physics2D.OverlapCircle(move_point.position + new Vector3(Input.GetAxisRaw("Horizontal"), 0f, 0f), 0.2f, stop_movement))
+            if(!Physics2D.OverlapCircle(move_point.position + new Vector3(Input.GetAxisRaw("Horizontal") * 0.5f, 0f, 0f), 0.1f, stop_movement))
             {
-                move_point.position += new Vector3(Input.GetAxisRaw("Horizontal"), 0f, 0f);
+                move_point.position += new Vector3(Input.GetAxisRaw("Horizontal") * 0.5f, 0f, 0f);
             }
         } else if(Math.Abs(Input.GetAxisRaw("Vertical")) == 1f){
-            if(!Physics2D.OverlapCircle(move_point.position + new Vector3(0f, Input.GetAxisRaw("Vertical"), 0f), 0.2f, stop_movement)){
-                move_point.position += new Vector3(0f, Input.GetAxisRaw("Vertical"), 0f);
+            if(!Physics2D.OverlapCircle(move_point.position + new Vector3(0f, Input.GetAxisRaw("Vertical") * 0.5f, 0f), 0.2f, stop_movement)){
+                move_point.position += new Vector3(0f, Input.GetAxisRaw("Vertical") * 0.5f, 0f);
             }
         }
         
+    }
+
+    // check collision
+    void OnCollisionEnter2D(Collision2D other){
+        Debug.Log("Player has collided with another object");
     }
 
     
