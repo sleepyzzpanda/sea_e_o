@@ -86,7 +86,7 @@ public class scene_behavior : MonoBehaviour
                 if(dialogue_box.GetComponent<Dialogue>().active == true){
                     player.GetComponent<player_behavior>().enabled = false;
                 } else{
-                    // player_choice = dialogue_box.GetComponent<Dialogue>().player_choice;
+                    player_choice = dialogue_box.GetComponent<Dialogue>().player_choice;
                     if(player_choice == 0){
                         scene_index = 2;
                         scene_flag = true;

@@ -8,13 +8,4 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Bedroom.unity
     guid: 8844d37d5dc1bc7478b1f6726f9074db
-  - enabled: 1
-    path: Assets/Scenes/hall1.unity
-    guid: 44b7e16977b3aa04b9c237c4928abfb3
-  - enabled: 1
-    path: Assets/Scenes/ContainRoom.unity
-    guid: 4992a6f11ae3ebc4d93af8aa6e7c83b9
-  - enabled: 1
-    path: Assets/Scenes/MainLab.unity
-    guid: 04aa45d5f398ed741a9d4cd965c8bd10
   m_configObjects: {}

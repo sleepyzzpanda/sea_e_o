@@ -5288,6 +5288,10 @@ PrefabInstance:
       propertyPath: prompt_text
       value: 
       objectReference: {fileID: 1524398883}
+    - target: {fileID: 2577401941328817735, guid: 5526f6bbade1ba046a50b062f7448f10, type: 3}
+      propertyPath: typingSpeed
+      value: 0.065
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5526f6bbade1ba046a50b062f7448f10, type: 3}
 --- !u!224 &746301624 stripped
@@ -9173,9 +9177,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sentences:
-  - this is a tutorial
-  - pretend i have taught you smth
+  - Welcome to SEAEO's underwater science lab
+  - You are the scientist Employee 15
+  - You are here to complete tasks given to you by INTRA, your AI assistant. You
+    can do this via a few basic controls
+  - 1. To interact with items, approach the item and press "Z" with your charect
+    on or near the item's icon
+  - If an item is interactable to you at the moment, this will trigger the interaction
+  - '2. General movement is done by the arrow keys. '
+  - 3. INTRA will periodically give you tasks or objectives. Complete these to progress
+    the story.
+  - 4. There will be moments where you will need to choose your next action. These
+    choices lead to different outcomes during the story.
+  - You have completed the tutorial
+  - Your first objective will be given shortly. You are currently in your bedroom.
   speakers:
+  - Tutorial
+  - Tutorial
+  - Tutorial
+  - Tutorial
+  - Tutorial
+  - Tutorial
+  - Tutorial
+  - Tutorial
   - Tutorial
   - Tutorial
   choices: (Z) Continue
