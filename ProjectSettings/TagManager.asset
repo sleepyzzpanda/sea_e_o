@@ -15,13 +15,13 @@ TagManager:
   - Water
   - UI
   - StopMovement
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - MainLabFlag
+  - ContainmentRoomFlag
+  - LockedRoomFlag
+  - EquipmentRoomFlag
+  - AIRoomFlag
+  - UpperHallFlag
+  - MoonPoolFlag
   - 
   - 
   - 
