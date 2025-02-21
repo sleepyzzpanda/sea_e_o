@@ -13,6 +13,7 @@ public class Dialogue : MonoBehaviour
     private int index;
     public int player_choice;
     public bool active;
+    public GameObject INTRA, MC;
     // Start is called before the first frame update
     void Start()
     {
@@ -30,6 +31,7 @@ public class Dialogue : MonoBehaviour
                 textDisplay.text = sentences[index];
             } 
             player_choice = 0;
+            
         } else if(Input.GetKeyDown(KeyCode.X)){
             if(textDisplay.text == sentences[index]){
                 nextLine();
@@ -38,6 +40,7 @@ public class Dialogue : MonoBehaviour
                 textDisplay.text = sentences[index];
             } 
             player_choice = 1;
+            
         }
         
     }
@@ -47,6 +50,16 @@ public class Dialogue : MonoBehaviour
         prompt_text.text = string.Empty;
         name_text.text = string.Empty;
         index = 0;
+        if(speakers[index] == "Employee 15"){
+                MC.SetActive(true);
+                INTRA.SetActive(false);
+            } else if(speakers[index] == "INTRA"){
+                MC.SetActive(false);
+                INTRA.SetActive(true);
+            } else{
+                MC.SetActive(false);
+                INTRA.SetActive(false);
+            }
         StartCoroutine(TypeLine());
     }
     IEnumerator TypeLine(){
@@ -61,6 +74,16 @@ public class Dialogue : MonoBehaviour
     void nextLine(){
         if(index < sentences.Length - 1){
             index++;
+            if(speakers[index] == "Employee 15"){
+                MC.SetActive(true);
+                INTRA.SetActive(false);
+            } else if(speakers[index] == "INTRA"){
+                MC.SetActive(false);
+                INTRA.SetActive(true);
+            } else{
+                MC.SetActive(false);
+                INTRA.SetActive(false);
+            }
             textDisplay.text = string.Empty;
             StartCoroutine(TypeLine());
         }

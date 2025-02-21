@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 18d0ab05281a9814ca7668789077fd87
+guid: aecc92de2433fa541ba7f316b1c35730
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -117,13 +117,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: weapons box_0
+      name: mc_sprites_0
       rect:
         serializedVersion: 2
-        x: 48
+        x: 1
         y: 0
-        width: 96
-        height: 96
+        width: 44
+        height: 87
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -131,20 +131,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 707d1ed2db9d27948aafd0f8dc4b15aa
-      internalID: 919558915
+      spriteID: a96e618c57c5cac408494c4ed7b563a3
+      internalID: -1089648702
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: weapons box_1
+      name: mc_sprites_1
       rect:
         serializedVersion: 2
-        x: 213
+        x: 45
         y: 0
-        width: 162
-        height: 96
+        width: 44
+        height: 87
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -152,20 +152,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3764da387e7d4ac44862f76d66380909
-      internalID: 476000130
+      spriteID: 1b66fe36b910b8b46b315413e49ecb9d
+      internalID: -1673120138
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: weapons box_2
+      name: mc_sprites_2
       rect:
         serializedVersion: 2
-        x: 405
+        x: 89
         y: 0
-        width: 162
-        height: 96
+        width: 44
+        height: 87
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -173,8 +173,29 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9af06473a85876d488d96193deb9ca6f
-      internalID: -662587598
+      spriteID: 65a3273939fcd5b428c39b67b4f65c02
+      internalID: 1342035364
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mc_sprites_3
+      rect:
+        serializedVersion: 2
+        x: 133
+        y: 0
+        width: 44
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d68230b783fad884dbb0beff2666977d
+      internalID: 548541218
       vertices: []
       indices: 
       edges: []
@@ -190,9 +211,10 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      weapons box_0: 919558915
-      weapons box_1: 476000130
-      weapons box_2: -662587598
+      mc_sprites_0: -1089648702
+      mc_sprites_1: -1673120138
+      mc_sprites_2: 1342035364
+      mc_sprites_3: 548541218
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 18d0ab05281a9814ca7668789077fd87
+guid: 4e71cdfbb8b897040b5c0c721bcc5968
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -117,13 +117,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: weapons box_0
+      name: monster_sprites_0
       rect:
         serializedVersion: 2
-        x: 48
+        x: 5
         y: 0
-        width: 96
-        height: 96
+        width: 93
+        height: 141
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -131,20 +131,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 707d1ed2db9d27948aafd0f8dc4b15aa
-      internalID: 919558915
+      spriteID: 6524c3733ceda174fa22f066cd3c0684
+      internalID: 1839023618
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: weapons box_1
+      name: monster_sprites_1
       rect:
         serializedVersion: 2
-        x: 213
+        x: 99
         y: 0
-        width: 162
-        height: 96
+        width: 93
+        height: 141
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -152,20 +152,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3764da387e7d4ac44862f76d66380909
-      internalID: 476000130
+      spriteID: cf640d1e4e43e9646a3e21f5a91290e6
+      internalID: 1477412684
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: weapons box_2
+      name: monster_sprites_2
       rect:
         serializedVersion: 2
-        x: 405
+        x: 193
         y: 0
-        width: 162
-        height: 96
+        width: 93
+        height: 141
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -173,8 +173,29 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9af06473a85876d488d96193deb9ca6f
-      internalID: -662587598
+      spriteID: 0ffc4884a11fee94eb29e5d4b13afa77
+      internalID: 251513335
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: monster_sprites_3
+      rect:
+        serializedVersion: 2
+        x: 287
+        y: 0
+        width: 93
+        height: 141
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e83d1fc11c6220345a0dfc1ddc966592
+      internalID: 651461659
       vertices: []
       indices: 
       edges: []
@@ -190,9 +211,10 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      weapons box_0: 919558915
-      weapons box_1: 476000130
-      weapons box_2: -662587598
+      monster_sprites_0: 1839023618
+      monster_sprites_3: 651461659
+      monster_sprites_2: 251513335
+      monster_sprites_1: 1477412684
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

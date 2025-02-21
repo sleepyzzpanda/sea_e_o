@@ -6,6 +6,7 @@ public class scene_behavior : MonoBehaviour
 {
     public GameObject dialogue_box;
     public GameObject player, rooms;
+    public GameObject chasing_monster;
 
     // for containment room
     public GameObject monster, computer;
@@ -14,11 +15,11 @@ public class scene_behavior : MonoBehaviour
     public GameObject lab_computer, chem_mixer, chem_identifier, broken_usb;
 
     // for equipment room
-    public GameObject con_suit, flashlight, harpoon, moonpool_flag, circuit_panel;
+    public GameObject con_suit, flashlight, harpoon, moonpool_flag, circuit_panel, AIroomDoor;
 
-    public GameObject tutorial;
+    public GameObject tutorial, monster_sample, monster_sample_2;
     private int scene_index, player_choice;
-    private bool scene_flag;
+    private bool scene_flag, sample_collected;
     private bool c_room_done, main_lab_done, equipment_room_done;
 
     // for c_room_done
@@ -29,6 +30,10 @@ public class scene_behavior : MonoBehaviour
 
     // for equipment_room_done
     bool con_suit_done, flashlight_done, harpoon_done;
+
+    public GameObject[] upperHall_boxes;
+    public GameObject[] AIroom_boxes;
+    public GameObject light_object, light2;
 
     // Start is called before the first frame update
     void Start()
@@ -43,8 +48,24 @@ public class scene_behavior : MonoBehaviour
         m2_done = false;
         m3_done = false;
         m4_done = false;
+        con_suit_done = false;
+        flashlight_done = false;
+        harpoon_done = false;
+        sample_collected = false;
+
+        // ai room door inactive
+        AIroomDoor.SetActive(false);
+        // set monster sample to inactive
+        monster_sample.SetActive(false);
+        monster_sample_2.SetActive(false);
+        // monster chase inactive
+        chasing_monster.SetActive(false);
+        // light object inactive
+        light_object.SetActive(false);
+        light2.SetActive(false);
         // set scene index to 0
-        scene_index = 16;
+        scene_index = 0;
+        scene_flag = true;
         // scene_0();
     }
 
@@ -52,15 +73,20 @@ public class scene_behavior : MonoBehaviour
     void Update()
     {
         switch(scene_index){
-            case 0: // no active cutscene
-                // enable player movement
-                player.GetComponent<player_behavior>().enabled = true;
+            case 0: // start scene
+                if(scene_flag == true){
+                    scene_0();
+                    scene_flag = false;
+                } else {
+                    player_choice = dialogue_box.GetComponent<Dialogue>().player_choice;
+                    scene_index = 1;
+                }
                 break;
             case 1: // intro scene
                 if(dialogue_box.GetComponent<Dialogue>().active == true){
                     player.GetComponent<player_behavior>().enabled = false;
                 } else{
-                    player_choice = dialogue_box.GetComponent<Dialogue>().player_choice;
+                    // player_choice = dialogue_box.GetComponent<Dialogue>().player_choice;
                     if(player_choice == 0){
                         scene_index = 2;
                         scene_flag = true;
@@ -130,7 +156,19 @@ public class scene_behavior : MonoBehaviour
                     }
                 }
                 break;
-            case 6: // 1st objective - TODO: add room check
+            case 6: // 1st objective
+                // if player tries to go upper hall, show dialogue
+                if(Physics2D.OverlapCircle(player.transform.position, 0.5f, LayerMask.GetMask("UpperHallFlag")) && dialogue_box.GetComponent<Dialogue>().active == false){
+                    // INTRA dialogue
+                    string[] lines = new string[1] {"It seems some boxes are blocking off this area. Lets come back later"};
+                    string[] speakers = new string[1] {"Employee 15"};
+                    string choices = "(Z) - Continue";
+                    dialogue_box.GetComponent<Dialogue>().choices = choices;
+                    dialogue_box.GetComponent<Dialogue>().speakers = speakers;
+                    dialogue_box.GetComponent<Dialogue>().sentences = lines;
+                    dialogue_box.SetActive(true);
+                    dialogue_box.GetComponent<Dialogue>().startDialogue();
+                }
                 // if player enters containment room do the monster roar and go to scene 7
                 if(Physics2D.OverlapCircle(player.transform.position, 0.5f, LayerMask.GetMask("ContainmentRoomFlag"))){
                     // play monster roar
@@ -234,9 +272,16 @@ public class scene_behavior : MonoBehaviour
                     scene_index = 13;
                 }
                 if(main_lab_done == true && c_room_done == true){
-                    // cut scene 14
-                    scene_flag = true;
-                    scene_index = 14;
+                    // if touching the containemnt room flag or main hall flag
+                    if(Physics2D.OverlapCircle(player.transform.position, 0.5f, LayerMask.GetMask("ContainmentRoomFlag"))){
+                        // cut scene 14
+                        scene_flag = true;
+                        scene_index = 14;
+                    } else if(Physics2D.OverlapCircle(player.transform.position, 0.5f, LayerMask.GetMask("MainLabFlag"))){
+                        // cut scene 14
+                        scene_flag = true;
+                        scene_index = 14;
+                    }
                 }
                 break;
 
@@ -358,6 +403,14 @@ public class scene_behavior : MonoBehaviour
                 }
                 break;
             case 14: // cutscene
+                // deactivate the upper hall boxes
+                foreach(GameObject box in upperHall_boxes){
+                    box.SetActive(false);
+                }
+                // deactivate the AI room boxes
+                foreach(GameObject box in AIroom_boxes){
+                    box.SetActive(false);
+                }
                 if(dialogue_box.GetComponent<Dialogue>().active == true){
                         player.GetComponent<player_behavior>().enabled = false;
                 } else{
@@ -372,8 +425,9 @@ public class scene_behavior : MonoBehaviour
                 }
                 break;
             case 15: // start rising action
-                // todo: move boxes
                 // player can move
+                // set light object to active
+                light_object.SetActive(true);
                 // if player enters upper hall
                 if(Physics2D.OverlapCircle(player.transform.position, 0.5f, LayerMask.GetMask("UpperHallFlag")) && dialogue_box.GetComponent<Dialogue>().active == false){
                     // INTRA dialogue
@@ -447,7 +501,7 @@ public class scene_behavior : MonoBehaviour
                     // if input key "Z" is pressed collect harpoon
                     if(Input.GetKeyDown(KeyCode.Z)){
                         harpoon_done = true;
-                        // harpoon.SetActive(false);
+                        harpoon.SetActive(false);
                     }
                 }
 
@@ -491,6 +545,8 @@ public class scene_behavior : MonoBehaviour
 
                 break;
             case 19: // moon pool
+                // player is_diving is true
+                player.GetComponent<player_behavior>().is_diving = true;
                 // if player near circuit panel trigger dialoge
                 if(Vector3.Distance(player.transform.position, circuit_panel.transform.position) <= 0.5f && dialogue_box.GetComponent<Dialogue>().active == false){
                     // if input key "Z" is pressed collect suit
@@ -507,10 +563,16 @@ public class scene_behavior : MonoBehaviour
                         // go to scene 20 - cutscene
                         scene_flag = true;
                         scene_index = 20;
+                        // turn light object off
+                        light_object.SetActive(false);
                     }
                 }
                 break;
             case 20: // cutscene
+                // activate AI room boxes
+                foreach(GameObject box in AIroom_boxes){
+                    box.SetActive(true);
+                }
                 if(dialogue_box.GetComponent<Dialogue>().active == true){
                         player.GetComponent<player_behavior>().enabled = false;
                 } else{
@@ -525,16 +587,169 @@ public class scene_behavior : MonoBehaviour
                         player.transform.position = new Vector3(-0.02f, 8.2f, -1f);
                         // move player movepoint
                         player.GetComponent<player_behavior>().move_point.position = new Vector3(-0.02f, 8.2f, -1f);
+                        scene_flag = true;
+                        // player is_diving is false
+                        player.GetComponent<player_behavior>().is_diving = false;
                         scene_index = 21;
+                    }
+                } 
+                break;
+            case 21: // rising action
+                // move some boxes here
+                // monster starts chasing
+                chasing_monster.SetActive(true);
+                // player needs to get to AI room
+                if(Physics2D.OverlapCircle(player.transform.position, 0.5f, LayerMask.GetMask("AIRoomFlag")) && dialogue_box.GetComponent<Dialogue>().active == false){
+                    // ai room door active
+                    AIroomDoor.SetActive(true);
+                    if(scene_flag == true){
+                        scene_21();
+                        scene_flag = false;
+                    } else {
+                        player_choice = dialogue_box.GetComponent<Dialogue>().player_choice;
+                        if(player_choice == 0 && dialogue_box.GetComponent<Dialogue>().active == false){
+                            // yes, kill it
+                            // go to scene 22
+                            scene_flag = true;
+                            scene_index = 22;
+                        } else if(player_choice == 1 && dialogue_box.GetComponent<Dialogue>().active == false){
+                            // no, blind it
+                            // go to scene 25
+                            scene_flag = true;
+                            scene_index = 25;
+                        }
+                    }   
+                }
+                // if caught by monster
+                if(Vector3.Distance(player.transform.position, chasing_monster.transform.position) <= 0.05f){
+                    scene_flag = true;
+                    // go to scene 27
+                    scene_index = 27;
+                }
+                break;
+
+            case 22: // kill monster
+                if(scene_flag == true){
+                    // player can't move
+                    player.GetComponent<player_behavior>().enabled = false;
+                    // kill monster
+                    scene_22();
+                    // go to scene 23
+                    scene_flag = false;
+                } else {
+                    // AI room door inactive
+                    AIroomDoor.SetActive(false);
+                    // player can move
+                    player.GetComponent<player_behavior>().enabled = true;
+                    // set monster sample to active
+                    monster_sample.SetActive(true);
+                    chasing_monster.SetActive(false);
+                    // go to scene 23
+                    scene_index = 23;
+                }
+                break;
+            case 23: // collect the sample
+                // if player is near monster sample
+                if(Vector3.Distance(player.transform.position, monster_sample.transform.position) <= 0.5f && dialogue_box.GetComponent<Dialogue>().active == false){
+                    // if input key "Z" is pressed collect suit
+                    if(Input.GetKeyDown(KeyCode.Z)){
+                        // set monster sample to inactive
+                        monster_sample.SetActive(false);
+                        sample_collected = true;
+                        // go to scene 24
+                        scene_index = 24;
                     }
                 }
                 break;
-            case 21: // rising action
-                
+
+            case 24: // go to main lab
+                // player needs to interact with chem mixer
+                // modify the chem mixer dialogue
+                chem_mixer.GetComponent<dialogue_item>().sentences = new string[3] {"[You mix the sample with some chemicals]", 
+                "[You have successfully created the chemical]", 
+                "Excellent work Employee 15. With this we can finally contain the monsters."};
+                chem_mixer.GetComponent<dialogue_item>().speakers = new string[3] {"Chem Mixer", "Chem Mixer", "INTRA"};
+                chem_mixer.GetComponent<dialogue_item>().choices = "(Z) - Continue";
+                // if player is near chem_mixer
+                if(Vector3.Distance(player.transform.position, chem_mixer.transform.position) <= 0.5f && dialogue_box.GetComponent<Dialogue>().active == false){
+                    // if input key "Z" is pressed collect suit
+                    if(Input.GetKeyDown(KeyCode.Z) && sample_collected == true){
+                        // trigger chem mixer dialogue
+                        string[] lines = chem_mixer.GetComponent<dialogue_item>().sentences;
+                        string[] speakers = chem_mixer.GetComponent<dialogue_item>().speakers;
+                        string choices = chem_mixer.GetComponent<dialogue_item>().choices;
+                        dialogue_box.GetComponent<Dialogue>().choices = choices;
+                        dialogue_box.GetComponent<Dialogue>().speakers = speakers;
+                        dialogue_box.GetComponent<Dialogue>().sentences = lines;
+                        dialogue_box.SetActive(true);
+                        dialogue_box.GetComponent<Dialogue>().startDialogue();
+                    }
+                }
                 break;
-
-
+            case 25: // blind monster
+                if(scene_flag == true){
+                    // player can't move
+                    player.GetComponent<player_behavior>().enabled = false;
+                    scene_25();
+                    // go to scene 23
+                    scene_flag = false;
+                } else {
+                    // AI room door inactive
+                    AIroomDoor.SetActive(false);
+                    // player can move
+                    player.GetComponent<player_behavior>().enabled = true;
+                    chasing_monster.SetActive(false);
+                    //go to scene 26
+                    scene_index = 26;
+                }
+                break;
+            case 26: // go to main lab
+                // player needs to interact with chem_identifier
+                // modify the chemical identifier dialogue
+                chem_identifier.GetComponent<dialogue_item>().sentences = new string[3] {"[You tinker with some parts in the machine]", "[Sample can be collected now]", "Ok now Employee 15. Use the sample with the chemical mixer. Lets see if we can get to the bottom of this"};
+                chem_identifier.GetComponent<dialogue_item>().speakers = new string[3] {"Chemical Identifier", "Chemical Identifier", "INTRA"};
+                chem_identifier.GetComponent<dialogue_item>().choices = "(Z) - Continue";
+                // if player is near chem_identifier
+                if(Vector3.Distance(player.transform.position, chem_identifier.transform.position) <= 0.5f && dialogue_box.GetComponent<Dialogue>().active == false){
+                    // if input key "Z" is pressed collect suit
+                    if(Input.GetKeyDown(KeyCode.Z)){
+                        // trigger chemical identifier dialogue
+                        string[] lines = chem_identifier.GetComponent<dialogue_item>().sentences;
+                        string[] speakers = chem_identifier.GetComponent<dialogue_item>().speakers;
+                        string choices = chem_identifier.GetComponent<dialogue_item>().choices;
+                        dialogue_box.GetComponent<Dialogue>().choices = choices;
+                        dialogue_box.GetComponent<Dialogue>().speakers = speakers;
+                        dialogue_box.GetComponent<Dialogue>().sentences = lines;
+                        dialogue_box.SetActive(true);
+                        dialogue_box.GetComponent<Dialogue>().startDialogue();
+                        // set monster sample to active
+                        monster_sample_2.SetActive(true);
+                    }
+                }
+                // if player is near sample
+                if(Vector3.Distance(player.transform.position, monster_sample_2.transform.position) <= 0.5f && dialogue_box.GetComponent<Dialogue>().active == false){
+                    // if input key "Z" is pressed collect suit
+                    if(Input.GetKeyDown(KeyCode.Z)){
+                        // set monster sample to inactive
+                        monster_sample_2.SetActive(false);
+                        sample_collected = true;
+                        // go to scene 24
+                        scene_index = 24;
+                    }
+                }
+                break;
+            case 27: // caught by monster
+                if(scene_flag == true){
+                    // player can't move
+                    player.GetComponent<player_behavior>().enabled = false;
+                    scene_27();
+                    scene_flag = false;
+                } else {
+                    // black screen
+                }
+                break;
         }
+        
         
     }
 
@@ -631,6 +846,7 @@ public class scene_behavior : MonoBehaviour
     }
 
     void scene_14(){
+        lights_flicker();
         string[] lines = new string[8] {"INTRA, why are the lights flickering?", 
         "The lights outside the station are close to failing.", "Is that bad?",
         "The lights dissuade any nearby life from approaching or damaging the station.",
@@ -648,10 +864,10 @@ public class scene_behavior : MonoBehaviour
     }
 
     void scene_20(){
-        string[] lines = new string[4] {"[a monster surges towards you out of nowhere]", 
+        string[] lines = new string[5] {"[a monster surges towards you out of nowhere]", 
         "Swim back to the station!", "[You swim away from monster and back inside station, lights are still dim]", 
-        "It’s following you inside! I’ve closed the security door! Run!"};
-        string[] speakers = new string[4] {"", "INTRA", "", "INTRA"};
+        "It’s following you inside! I’ve closed the security door! Run!", "Then the only safe room right now is the AI room.."};
+        string[] speakers = new string[5] {"", "INTRA", "", "INTRA", "Employee 15"};
         string choices = "(Z) Continue";
         dialogue_box.GetComponent<Dialogue>().choices = choices;
         dialogue_box.GetComponent<Dialogue>().speakers = speakers;
@@ -659,4 +875,69 @@ public class scene_behavior : MonoBehaviour
         dialogue_box.SetActive(true);
         dialogue_box.GetComponent<Dialogue>().startDialogue();
     }
+
+    void scene_21(){
+        string[] lines = new string[1] {"[The monster is on the other side of the door. You have 2 choices: 1. Shoot it with your Harpoon, 2. Blind it with your flashlight]"};
+        string[] speakers = new string[1] {""};
+        string choices = "(Z) Kill it with Harpoon, (X) Blind it with Flashlight";
+        dialogue_box.GetComponent<Dialogue>().choices = choices;
+        dialogue_box.GetComponent<Dialogue>().speakers = speakers;
+        dialogue_box.GetComponent<Dialogue>().sentences = lines;
+        dialogue_box.SetActive(true);
+        dialogue_box.GetComponent<Dialogue>().startDialogue();
+    }
+
+    void scene_22(){
+        string[] lines = new string[6] {"Strike it quickly!", 
+        "[INTRA opens the door and you shoot the monster]", 
+        "Good job, its dead now.", 
+        "[A chemical sample is left behind]", 
+        "Perfect! We can use this sample to further our research.", 
+        "Employee 15, can you take this to the main lab? I believe this is just what we need to eliminate the monsters quickly"};
+        string[] speakers = new string[6] {"INTRA", "", "INTRA", "", "INTRA", "INTRA"};
+        string choices = "(Z) Continue";
+        dialogue_box.GetComponent<Dialogue>().choices = choices;
+        dialogue_box.GetComponent<Dialogue>().speakers = speakers;
+        dialogue_box.GetComponent<Dialogue>().sentences = lines;
+        dialogue_box.SetActive(true);
+        dialogue_box.GetComponent<Dialogue>().startDialogue();
+    }
+
+    void scene_25(){
+        string[] lines = new string[7] {"[INTRA opens the door and you blind the monster]", 
+        "[the monster escapes fearfully into the vents]", 
+        "Well that’s disappointing. A sample is required to further your research eventually.",
+        "That sample could've been just what we needed to eliminate the monsters quickly.", 
+        "Sorry, I couldn’t kill it. Can I get a sample from the monster in the containment room instead?", 
+        "Maybe. But it requires a tool you currently don't have.",
+        "The main lab should have the parts needed to build it however."};
+        string[] speakers = new string[7] {"", "", "INTRA", "INTRA", "Employee 15", "INTRA", "INTRA"};
+        string choices = "(Z) Continue";
+        dialogue_box.GetComponent<Dialogue>().choices = choices;
+        dialogue_box.GetComponent<Dialogue>().speakers = speakers;
+        dialogue_box.GetComponent<Dialogue>().sentences = lines;
+        dialogue_box.SetActive(true);
+        dialogue_box.GetComponent<Dialogue>().startDialogue();
+    }
+
+    void scene_27(){
+        string[] lines = new string[1] {"[The monster catches you and you are killed]"};
+        string[] speakers = new string[1] {""}; 
+        string choices = "(Z) Continue";
+        dialogue_box.GetComponent<Dialogue>().choices = choices;
+        dialogue_box.GetComponent<Dialogue>().speakers = speakers;
+        dialogue_box.GetComponent<Dialogue>().sentences = lines;
+        dialogue_box.SetActive(true);
+        dialogue_box.GetComponent<Dialogue>().startDialogue();
+    }
+    void lights_flicker(){
+        // turn light object off and on
+        light2.SetActive(true);
+        if(light_object.activeSelf == true){
+            light_object.SetActive(false);
+        } else {
+            light_object.SetActive(true);
+        }
+    }
 }
+

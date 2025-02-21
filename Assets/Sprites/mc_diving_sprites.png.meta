@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 18d0ab05281a9814ca7668789077fd87
+guid: 61c632eb4ccde4d44bf7a2f7e0f833bc
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -117,13 +117,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: weapons box_0
+      name: mc_diving_sprites_0
       rect:
         serializedVersion: 2
-        x: 48
+        x: 1
         y: 0
-        width: 96
-        height: 96
+        width: 43
+        height: 90
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -131,20 +131,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 707d1ed2db9d27948aafd0f8dc4b15aa
-      internalID: 919558915
+      spriteID: a949d8441e455be4c96e20b45527f6e8
+      internalID: -2007497510
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: weapons box_1
+      name: mc_diving_sprites_1
       rect:
         serializedVersion: 2
-        x: 213
+        x: 45
         y: 0
-        width: 162
-        height: 96
+        width: 43
+        height: 90
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -152,20 +152,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3764da387e7d4ac44862f76d66380909
-      internalID: 476000130
+      spriteID: 091a9adaad136ce46b7d9bb9aaca121c
+      internalID: 1006584718
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: weapons box_2
+      name: mc_diving_sprites_2
       rect:
         serializedVersion: 2
-        x: 405
+        x: 89
         y: 0
-        width: 162
-        height: 96
+        width: 43
+        height: 90
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -173,8 +173,29 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9af06473a85876d488d96193deb9ca6f
-      internalID: -662587598
+      spriteID: 6c133e069ddf4264db5dbb6121e3992f
+      internalID: -1757647668
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mc_diving_sprites_3
+      rect:
+        serializedVersion: 2
+        x: 133
+        y: 0
+        width: 43
+        height: 90
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 695cb5137c58bff42b95968bdbb2121a
+      internalID: 484361590
       vertices: []
       indices: 
       edges: []
@@ -190,9 +211,10 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      weapons box_0: 919558915
-      weapons box_1: 476000130
-      weapons box_2: -662587598
+      mc_diving_sprites_2: -1757647668
+      mc_diving_sprites_3: 484361590
+      mc_diving_sprites_1: 1006584718
+      mc_diving_sprites_0: -2007497510
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
