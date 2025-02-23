@@ -71,7 +71,7 @@ public class scene_behavior : MonoBehaviour
         // obective screen inactive
         objective_screen.SetActive(false);
         // set scene index to -1
-        scene_index = 6;
+        scene_index = -1;
         scene_flag = true;
     }
 
