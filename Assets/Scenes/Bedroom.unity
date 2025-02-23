@@ -10087,23 +10087,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sentences:
-  - Welcome to SEAEO's underwater science lab
-  - You are the scientist Employee 15
-  - You are here to complete tasks given to you by INTRA, your AI assistant. You
-    can do this via a few basic controls
-  - 1. To interact with items, approach the item and press "Z" with your charect
-    on or near the item's icon
-  - If an item is interactable to you at the moment, this will trigger the interaction
-  - '2. General movement is done by the arrow keys. '
-  - 3. INTRA will periodically give you tasks or objectives. Complete these to progress
-    the story.
-  - 4. There will be moments where you will need to choose your next action. These
-    choices lead to different outcomes during the story.
-  - You have completed the tutorial
-  - Your first objective will be given shortly. You are currently in your bedroom.
+  - During your main assignment here, SEA.E.O would also like your help maintaining
+    and securing the station by completing tasks given to you by INTRA.
+  - 'You can do this via a few basic controls:'
+  - 1. General movement is done by the arrow keys.
+  - "2. To interact with items, approach it and press \u2018z\u2019. If an item is
+    available to you at the moment, this will trigger an interaction."
+  - "3. To open your inventory and view your items, press \u2018c\u2019"
+  - '4. INTRA will periodically give you tasks or objectives. Complete these to progress
+    the story. '
+  - 5. There will be moments where you will need to choose your next action. These
+    choices lead to different story outcomes.
+  - Thank you for your cooperation, SEA.E.O formally welcomes you here!
   speakers:
-  - Tutorial
-  - Tutorial
   - Tutorial
   - Tutorial
   - Tutorial
