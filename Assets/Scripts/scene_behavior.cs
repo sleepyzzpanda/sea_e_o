@@ -36,6 +36,8 @@ public class scene_behavior : MonoBehaviour
     public GameObject[] AIroom_boxes;
     public GameObject light_object, light2, startScreen, deadScreen, objective_screen;
     public TextMeshProUGUI objective_text;
+    public GameObject boxTutTrigger;
+    private bool box_tut_done;
 
     // Start is called before the first frame update
     void Start()
@@ -54,6 +56,7 @@ public class scene_behavior : MonoBehaviour
         flashlight_done = false;
         harpoon_done = false;
         sample_collected = false;
+        box_tut_done = false;
 
         // ai room door inactive
         AIroomDoor.SetActive(false);
@@ -68,7 +71,7 @@ public class scene_behavior : MonoBehaviour
         // obective screen inactive
         objective_screen.SetActive(false);
         // set scene index to -1
-        scene_index = 26;
+        scene_index = 6;
         scene_flag = true;
     }
 
@@ -173,6 +176,18 @@ public class scene_behavior : MonoBehaviour
                 // obj active
                 objective_screen.SetActive(true);
                 objective_text.text = "-> Explore containment room \n-> Explore main lab";
+                // check if player is close to box tut trigger
+                if(Vector3.Distance(player.transform.position, boxTutTrigger.transform.position) <= 1.5f && dialogue_box.GetComponent<Dialogue>().active == false && box_tut_done == false){
+                    string[] lines = new string[1] {"It seems some boxes are blocking off this area. Press Z to move them."};
+                    string[] speakers = new string[1] {"INTRA"};
+                    string choices = "(Z) - Continue";
+                    dialogue_box.GetComponent<Dialogue>().choices = choices;
+                    dialogue_box.GetComponent<Dialogue>().speakers = speakers;
+                    dialogue_box.GetComponent<Dialogue>().sentences = lines;
+                    dialogue_box.SetActive(true);
+                    dialogue_box.GetComponent<Dialogue>().startDialogue();
+                    box_tut_done = true;
+                }
                 // if player tries to go upper hall, show dialogue
                 if(Physics2D.OverlapCircle(player.transform.position, 0.5f, LayerMask.GetMask("UpperHallFlag")) && dialogue_box.GetComponent<Dialogue>().active == false){
                     // INTRA dialogue

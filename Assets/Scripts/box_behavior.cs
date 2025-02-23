@@ -7,11 +7,13 @@ public class box_behavior : MonoBehaviour
     public float speed = 10.0f;
     public Transform move_point;
     public LayerMask stop_movement;
+    private GameObject player;
    
     // Start is called before the first frame update
     void Start()
     {
-        // move_point.parent = null;
+        move_point.parent = null;
+        player = GameObject.Find("Player");
         speed = 10.0f;
     }
 
@@ -19,17 +21,17 @@ public class box_behavior : MonoBehaviour
     void Update()
     {
         // // if player is near item, add item to inventory
-        if(Vector3.Distance(GameObject.Find("Player").transform.position, transform.position) <= 1.25f){
+        if(Vector3.Distance(player.transform.position, transform.position) <= 1.25f){
             if(Input.GetKeyDown(KeyCode.Z) && Vector3.Distance(move_point.position, transform.position) <= 0.05f){
                 // if player is to the left move box to the right
-                if(GameObject.Find("Player").transform.position.x < transform.position.x){
+                if(player.transform.position.x < transform.position.x){
                     box_move("right");
-                } else if(GameObject.Find("Player").transform.position.x > transform.position.x){
+                } else if(player.transform.position.x > transform.position.x){
                     box_move("left");
                 } 
-                if(GameObject.Find("Player").transform.position.y > transform.position.y){
+                if(player.transform.position.y > transform.position.y){
                     box_move("down");
-                } else if(GameObject.Find("Player").transform.position.y < transform.position.y){
+                } else if(player.transform.position.y < transform.position.y){
                     box_move("up");
                 }
             }
