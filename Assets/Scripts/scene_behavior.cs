@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class scene_behavior : MonoBehaviour
 {
     public GameObject dialogue_box;
     public GameObject player, rooms;
-    public GameObject chasing_monster;
+    public GameObject chasing_monster, chasing_monster_ocean;
 
     // for containment room
     public GameObject monster, computer;
@@ -33,7 +34,8 @@ public class scene_behavior : MonoBehaviour
 
     public GameObject[] upperHall_boxes;
     public GameObject[] AIroom_boxes;
-    public GameObject light_object, light2;
+    public GameObject light_object, light2, startScreen, deadScreen, objective_screen;
+    public TextMeshProUGUI objective_text;
 
     // Start is called before the first frame update
     void Start()
@@ -63,15 +65,23 @@ public class scene_behavior : MonoBehaviour
         // light object inactive
         light_object.SetActive(false);
         light2.SetActive(false);
-        // set scene index to 0
-        scene_index = 0;
+        // obective screen inactive
+        objective_screen.SetActive(false);
+        // set scene index to -1
+        scene_index = 26;
         scene_flag = true;
-        // scene_0();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if(scene_index == -1){
+            startScreen.SetActive(true);
+            if(Input.GetKeyDown(KeyCode.X)){
+                startScreen.SetActive(false);
+                scene_index = 0;
+            }
+        }
         switch(scene_index){
             case 0: // start scene
                 if(scene_flag == true){
@@ -123,6 +133,9 @@ public class scene_behavior : MonoBehaviour
                 }
                 break;
             case 4: // no active cutscene - tutorial
+                // obj active
+                objective_screen.SetActive(true);
+                objective_text.text = "-> Go to the tutorial";
                 // check if player is near tutorial
                 if(Vector3.Distance(player.transform.position, tutorial.transform.position) <= 0.5f && dialogue_box.GetComponent<Dialogue>().active == false){
                     // if input key "Z" is pressed, show dialogue box
@@ -157,6 +170,9 @@ public class scene_behavior : MonoBehaviour
                 }
                 break;
             case 6: // 1st objective
+                // obj active
+                objective_screen.SetActive(true);
+                objective_text.text = "-> Explore containment room \n-> Explore main lab";
                 // if player tries to go upper hall, show dialogue
                 if(Physics2D.OverlapCircle(player.transform.position, 0.5f, LayerMask.GetMask("UpperHallFlag")) && dialogue_box.GetComponent<Dialogue>().active == false){
                     // INTRA dialogue
@@ -172,6 +188,15 @@ public class scene_behavior : MonoBehaviour
                 // if player enters containment room do the monster roar and go to scene 7
                 if(Physics2D.OverlapCircle(player.transform.position, 0.5f, LayerMask.GetMask("ContainmentRoomFlag"))){
                     // play monster roar
+                    // play some dialoge
+                    string [] lines = new string[2] {"[You hear a loud roar from the containment room]", "[puzzle for getting into room here]"};
+                    string [] speakers = new string[2] {"", ""};
+                    string choices = "(Z) - Continue";
+                    dialogue_box.GetComponent<Dialogue>().choices = choices;
+                    dialogue_box.GetComponent<Dialogue>().speakers = speakers;
+                    dialogue_box.GetComponent<Dialogue>().sentences = lines;
+                    dialogue_box.SetActive(true);
+                    dialogue_box.GetComponent<Dialogue>().startDialogue();
                     scene_index = 7;
                 } else if(Physics2D.OverlapCircle(player.transform.position, 0.5f, LayerMask.GetMask("MainLabFlag"))){
                     // if player enters main lab, go to scene 13
@@ -256,7 +281,7 @@ public class scene_behavior : MonoBehaviour
                     }
                 }
                 break;
-            case 10: // todo: check if main lab and croom done
+            case 10: 
                 // no active cutscene
                 player.GetComponent<player_behavior>().enabled = true;
                 // check if containment room is done
@@ -268,10 +293,23 @@ public class scene_behavior : MonoBehaviour
                     return;
                 }
                 if(main_lab_done == false && c_room_done == true){
+                    // obj = go to main lab
+                    objective_screen.SetActive(true);
+                    objective_text.text = "-> Explore Main Lab";
                     // go to main lab
                     scene_index = 13;
                 }
+                if(main_lab_done == true && c_room_done == false){
+                    // obj = go to containment room
+                    objective_screen.SetActive(true);
+                    objective_text.text = "-> Explore Containment Room";
+                    // go to containment room
+                    scene_index = 7;
+                }
                 if(main_lab_done == true && c_room_done == true){
+                    // obj = exit room
+                    objective_screen.SetActive(true);
+                    objective_text.text = "-> Exit the room";
                     // if touching the containemnt room flag or main hall flag
                     if(Physics2D.OverlapCircle(player.transform.position, 0.5f, LayerMask.GetMask("ContainmentRoomFlag"))){
                         // cut scene 14
@@ -395,6 +433,11 @@ public class scene_behavior : MonoBehaviour
                     }
                 }
                 if(m1_done == true && m2_done == true && m3_done == true && m4_done == true){
+                    if(c_room_done != true){
+                        // obj = go to containment room
+                        objective_screen.SetActive(true);
+                        objective_text.text = "-> Explore Containment Room";
+                    } 
                     main_lab_done = true;
                     // set usb item to inactive
                     broken_usb.SetActive(false);
@@ -425,7 +468,9 @@ public class scene_behavior : MonoBehaviour
                 }
                 break;
             case 15: // start rising action
-                // player can move
+                // obj = go to equiment room
+                objective_screen.SetActive(true);
+                objective_text.text = "-> Go to equipment room";
                 // set light object to active
                 light_object.SetActive(true);
                 // if player enters upper hall
@@ -472,6 +517,9 @@ public class scene_behavior : MonoBehaviour
                 // if equipment room
                 if(Physics2D.OverlapCircle(player.transform.position, 0.5f, LayerMask.GetMask("EquipmentRoomFlag")) && dialogue_box.GetComponent<Dialogue>().active == false){
                     // INTRA dialogue
+                    // obj = get equipment
+                    objective_screen.SetActive(true);
+                    objective_text.text = "-> Get equipment";
                     string[] lines = new string[1] {"Before you proceed, you must equip a containment suit."};
                     string[] speakers = new string[1] {"INTRA"};
                     string choices = "(Z) - Continue";
@@ -532,6 +580,9 @@ public class scene_behavior : MonoBehaviour
                 }
                 break;
             case 18: // moon pool
+                // obj = go to moon pool
+                objective_screen.SetActive(true);
+                objective_text.text = "-> Interact with Moon Pool";
                 // if player is on moonpool flag
                 if(Physics2D.OverlapCircle(player.transform.position, 0.5f, LayerMask.GetMask("MoonPoolFlag")) && dialogue_box.GetComponent<Dialogue>().active == false){
                     if(Input.GetKeyDown(KeyCode.Z)){
@@ -547,6 +598,9 @@ public class scene_behavior : MonoBehaviour
             case 19: // moon pool
                 // player is_diving is true
                 player.GetComponent<player_behavior>().is_diving = true;
+                // obj = go to circuit panel
+                objective_screen.SetActive(true);
+                objective_text.text = "-> Interact with Circuit Panel";
                 // if player near circuit panel trigger dialoge
                 if(Vector3.Distance(player.transform.position, circuit_panel.transform.position) <= 0.5f && dialogue_box.GetComponent<Dialogue>().active == false){
                     // if input key "Z" is pressed collect suit
@@ -566,6 +620,12 @@ public class scene_behavior : MonoBehaviour
                         // turn light object off
                         light_object.SetActive(false);
                     }
+                    // check for overlap with monster
+                    if(Physics2D.OverlapCircle(player.transform.position, 0.5f, LayerMask.GetMask("Monster")) && dialogue_box.GetComponent<Dialogue>().active == false){
+                        scene_flag = true;
+                        // go to scene 27
+                        scene_index = 27;
+                    }
                 }
                 break;
             case 20: // cutscene
@@ -577,20 +637,33 @@ public class scene_behavior : MonoBehaviour
                         player.GetComponent<player_behavior>().enabled = false;
                 } else{
                     if(scene_flag == true){
-                        // circuit dialog
                         scene_20();
                         scene_flag = false;
                     } else {
+                        // activate ocean monster
+                        chasing_monster_ocean.SetActive(true);
+                        // obj = escape to door
+                        objective_screen.SetActive(true);
+                        objective_text.text = "-> Escape to the door";
                         // player can move
                         player.GetComponent<player_behavior>().enabled = true;
-                        // teleport player to upper hall
-                        player.transform.position = new Vector3(-0.02f, 8.2f, -1f);
-                        // move player movepoint
-                        player.GetComponent<player_behavior>().move_point.position = new Vector3(-0.02f, 8.2f, -1f);
-                        scene_flag = true;
-                        // player is_diving is false
-                        player.GetComponent<player_behavior>().is_diving = false;
-                        scene_index = 21;
+                        // if player is on OceanExit and presses Z
+                        if(Physics2D.OverlapCircle(player.transform.position, 0.5f, LayerMask.GetMask("OceanExit")) && dialogue_box.GetComponent<Dialogue>().active == false){
+                            // if input key "Z" is pressed collect suit
+                            if(Input.GetKeyDown(KeyCode.Z)){
+                                // teleport player to upper hall
+                                player.transform.position = new Vector3(-0.02f, 8.2f, -1f);
+                                // move player movepoint
+                                player.GetComponent<player_behavior>().move_point.position = new Vector3(-0.02f, 8.2f, -1f);
+                                scene_flag = true;
+                                // player is_diving is false
+                                player.GetComponent<player_behavior>().is_diving = false;
+                                // set monster to inactive
+                                chasing_monster_ocean.SetActive(false);
+                                // go to scene 21
+                                scene_index = 21;
+                            }
+                        }
                     }
                 } 
                 break;
@@ -598,6 +671,9 @@ public class scene_behavior : MonoBehaviour
                 // move some boxes here
                 // monster starts chasing
                 chasing_monster.SetActive(true);
+                // obj = get to AI room
+                objective_screen.SetActive(true);
+                objective_text.text = "-> Get to AI Room (Upper Hall - Left)";
                 // player needs to get to AI room
                 if(Physics2D.OverlapCircle(player.transform.position, 0.5f, LayerMask.GetMask("AIRoomFlag")) && dialogue_box.GetComponent<Dialogue>().active == false){
                     // ai room door active
@@ -620,8 +696,7 @@ public class scene_behavior : MonoBehaviour
                         }
                     }   
                 }
-                // if caught by monster
-                if(Vector3.Distance(player.transform.position, chasing_monster.transform.position) <= 0.05f){
+                if(Physics2D.OverlapCircle(player.transform.position, 0.5f, LayerMask.GetMask("Monster")) && dialogue_box.GetComponent<Dialogue>().active == false){
                     scene_flag = true;
                     // go to scene 27
                     scene_index = 27;
@@ -637,6 +712,9 @@ public class scene_behavior : MonoBehaviour
                     // go to scene 23
                     scene_flag = false;
                 } else {
+                    // obj = collect sample
+                    objective_screen.SetActive(true);
+                    objective_text.text = "-> Collect monster sample";
                     // AI room door inactive
                     AIroomDoor.SetActive(false);
                     // player can move
@@ -651,7 +729,7 @@ public class scene_behavior : MonoBehaviour
             case 23: // collect the sample
                 // if player is near monster sample
                 if(Vector3.Distance(player.transform.position, monster_sample.transform.position) <= 0.5f && dialogue_box.GetComponent<Dialogue>().active == false){
-                    // if input key "Z" is pressed collect suit
+                    // if input key "Z" is pressed collect sample
                     if(Input.GetKeyDown(KeyCode.Z)){
                         // set monster sample to inactive
                         monster_sample.SetActive(false);
@@ -663,6 +741,9 @@ public class scene_behavior : MonoBehaviour
                 break;
 
             case 24: // go to main lab
+                // obj = go to main lab
+                objective_screen.SetActive(true);
+                objective_text.text = "-> Go to Chemical Mixer [Main Lab]";
                 // player needs to interact with chem mixer
                 // modify the chem mixer dialogue
                 chem_mixer.GetComponent<dialogue_item>().sentences = new string[3] {"[You mix the sample with some chemicals]", 
@@ -674,6 +755,9 @@ public class scene_behavior : MonoBehaviour
                 if(Vector3.Distance(player.transform.position, chem_mixer.transform.position) <= 0.5f && dialogue_box.GetComponent<Dialogue>().active == false){
                     // if input key "Z" is pressed collect suit
                     if(Input.GetKeyDown(KeyCode.Z) && sample_collected == true){
+                        // obj = to be continued
+                        objective_screen.SetActive(true);
+                        objective_text.text = "-> To be continued...";
                         // trigger chem mixer dialogue
                         string[] lines = chem_mixer.GetComponent<dialogue_item>().sentences;
                         string[] speakers = chem_mixer.GetComponent<dialogue_item>().speakers;
@@ -683,6 +767,7 @@ public class scene_behavior : MonoBehaviour
                         dialogue_box.GetComponent<Dialogue>().sentences = lines;
                         dialogue_box.SetActive(true);
                         dialogue_box.GetComponent<Dialogue>().startDialogue();
+                        scene_index = 28;
                     }
                 }
                 break;
@@ -691,7 +776,6 @@ public class scene_behavior : MonoBehaviour
                     // player can't move
                     player.GetComponent<player_behavior>().enabled = false;
                     scene_25();
-                    // go to scene 23
                     scene_flag = false;
                 } else {
                     // AI room door inactive
@@ -704,6 +788,18 @@ public class scene_behavior : MonoBehaviour
                 }
                 break;
             case 26: // go to main lab
+                // if monster sample ! active
+                if(monster_sample_2.activeSelf == false){
+                    // obj = go to main lab
+                    objective_screen.SetActive(true);
+                    objective_text.text = "-> Go to Chemical Identifier [Main Lab]";
+                } else {
+                    // obj = collect monster sample
+                    objective_screen.SetActive(true);
+                    objective_text.text = "-> Collect monster sample";
+                }
+                
+                
                 // player needs to interact with chem_identifier
                 // modify the chemical identifier dialogue
                 chem_identifier.GetComponent<dialogue_item>().sentences = new string[3] {"[You tinker with some parts in the machine]", "[Sample can be collected now]", "Ok now Employee 15. Use the sample with the chemical mixer. Lets see if we can get to the bottom of this"};
@@ -746,7 +842,13 @@ public class scene_behavior : MonoBehaviour
                     scene_flag = false;
                 } else {
                     // black screen
+                    deadScreen.SetActive(true);
                 }
+                break;
+            case 28: // end of demo 
+                // obj = to be continued
+                objective_screen.SetActive(true);
+                objective_text.text = "-> To be continued...";
                 break;
         }
         
@@ -798,7 +900,7 @@ public class scene_behavior : MonoBehaviour
         string[] lines = new string[9] {"What have you been told so far?", 
         "I was told the research here was confidential, and that I would learn the rest of the details when I arrived.", 
         "Of course, what would you like to know?", "What is my mission?", 
-        "This area of the ocean is owned by SE’O. You are to ensure all systems are maintained to support ongoing operations by keeping the area secure.", 
+        "This area of the ocean is owned by SEO. You are to ensure all systems are maintained to support ongoing operations by keeping the area secure.", 
         "There are a few rooms you can explore", "1. The Main Lab (Check available equipement)", 
         "2. The Containment Room (see creature you are studying)", "Thank you Intra. This all sounds exciting!"};
         string[] speakers = new string[9] {"INTRA", "Employee 15", "INTRA", "Employee 15", "INTRA", "INTRA", "INTRA", "INTRA", "Employee 15"};
@@ -864,9 +966,9 @@ public class scene_behavior : MonoBehaviour
     }
 
     void scene_20(){
-        string[] lines = new string[5] {"[a monster surges towards you out of nowhere]", 
-        "Swim back to the station!", "[You swim away from monster and back inside station, lights are still dim]", 
-        "It’s following you inside! I’ve closed the security door! Run!", "Then the only safe room right now is the AI room.."};
+        string[] lines = new string[5] {"[a monster appears out of nowhere]", 
+        "Swim back to the station!", "[The monster surges towards you]", 
+        "I’ve closed the security door! Run!", "<Then the only safe room right now is the AI room.. I need to go back through the doors above>"};
         string[] speakers = new string[5] {"", "INTRA", "", "INTRA", "Employee 15"};
         string choices = "(Z) Continue";
         dialogue_box.GetComponent<Dialogue>().choices = choices;
